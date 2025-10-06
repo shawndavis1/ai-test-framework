@@ -5,6 +5,9 @@ on:
     branches: [ main ]
   pull_request:
 
+permissions:
+  contents: write  # allows github-actions[bot] to push, create tags, etc.  
+
 jobs:
   tests:
     runs-on: ubuntu-latest
