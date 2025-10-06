@@ -37,8 +37,6 @@ jobs:
         with:
           name: allure-results
           path: reports
-            - name: Install Allure Commandline
-        run: npm install -g allure-commandline
 
       # 6️⃣ Install Allure Commandline
       - name: Install Allure Commandline
@@ -53,4 +51,4 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: allure-report  
+          publish_dir: allure-report
