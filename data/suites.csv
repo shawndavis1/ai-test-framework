@@ -1,0 +1,3 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","133","test_get_users","tests.api","Mon Oct 06 19:30:54 UTC 2025","passed","Mon Oct 06 19:30:54 UTC 2025","","test_users_api","",""
+"","573","test_login_success[chromium]","tests.ui","Mon Oct 06 19:30:55 UTC 2025","passed","Mon Oct 06 19:30:55 UTC 2025","","test_login_ui","",""
