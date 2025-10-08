@@ -30,7 +30,7 @@ def summarize_test_results(report_dir):
     response = client.chat.completions.create(
         model="gpt-5",
         messages=[{"role": "user", "content": prompt}],
-        max_tokens=400
+        max_completion_tokens=400
     )
 
     summary = response.choices[0].message.content
