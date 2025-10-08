@@ -34,6 +34,11 @@ jobs:
       - name: Run tests
         run: pytest --alluredir=reports
 
+      # 5️⃣ Generate GPT-based test summary
+      - name: Generate AI Test Summary
+        run: |
+          python workflows/gpt_summary.py > ai_summary.txt  
+
       # 5️⃣ Upload Allure raw results (for debugging or local rendering)
       - name: Upload Allure results
         uses: actions/upload-artifact@v4
