@@ -1,0 +1,9 @@
+- Total number of tests: 24
+- Number of passed tests: 23
+- Number of failed tests: 1
+
+Failed tests:
+- test_get_users: AssertionError: assert 401 == 200; where 401 = <Response [401]>.status_code
+
+Management summary:
+Overall pass rate is 95.8% (23/24). All login_success[chromium] tests passed. One intermittent failure occurred in test_get_users, returning 401 instead of the expected 200. Given that test_get_users passed multiple times and failed once, this may indicate a transient auth/configuration issue. Recommend reviewing API authentication/state setup and environment stability for that endpoint.

@@ -1,0 +1,103 @@
+name: Playwright Test Suite
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+
+permissions:
+  contents: write  # allows github-actions[bot] to push, create tags, etc.  
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout your repo
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2️⃣ Set up Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      # 3️⃣ Install dependencies
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install pytest pytest-playwright allure-pytest requests faker openai
+          playwright install --with-deps
+
+      # 4️⃣ Run tests and generate Allure raw results
+      - name: Run tests
+        run: pytest --alluredir=reports
+
+      # 5️⃣ Upload Allure raw results (for debugging or local rendering)
+      - name: Upload Allure results
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: reports
+
+      # 6️⃣ Generate AI summary of Allure results
+      - name: Generate AI summary of test results
+        if: always() # run even if tests fail
+        run: |
+          pip install openai
+          python .github/scripts/gpt_summary_allure.py reports
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+      # 7️⃣ Post AI test summary comment
+      - name: Post AI test summary comment
+        if: github.event_name == 'pull_request'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: AI Test Summary
+          path: ai_summary.txt
+
+      # 8️⃣ Upload AI summary as an artifact
+      - name: Upload AI test summary artifact
+        if: always() # ensure it uploads even if tests fail
+        uses: actions/upload-artifact@v4
+        with:
+          name: ai-test-summary
+          path: ai_summary.txt
+    
+      # 9️⃣ Display AI summary in GitHub Actions summary view
+      - name: Display AI summary in workflow summary
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const summaryText = fs.readFileSync('ai_summary.txt', 'utf8');
+            
+            const repo = process.env.GITHUB_REPOSITORY; // e.g., "shawndavis1/ai-test-framework"
+            const username = repo.split('/')[0];
+            const reponame = repo.split('/')[1];
+            const allureLink = `https://${username}.github.io/${reponame}/`;
+
+            await core.summary
+              .addHeading('🤖 AI Test Summary', 2)
+              .addRaw(summaryText)
+              .addBreak()
+              .addLink('📊 View Full Allure Report', allureLink)
+              .write();
+
+      # 8️⃣ Install Allure Commandline
+      - name: Install Allure Commandline
+        run: npm install -g allure-commandline
+
+      # 9️⃣ Generate Allure Report
+      - name: Generate Allure report
+        run: allure generate reports --clean -o allure-report
+
+      # 🔟 Deploy Allure Report to GitHub Pages
+      - name: Deploy Allure report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: allure-report
