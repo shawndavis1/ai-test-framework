@@ -30,9 +30,16 @@ jobs:
           pip install pytest pytest-playwright allure-pytest requests faker openai
           playwright install --with-deps
 
+      - name: Prepare Allure results directory
+        run: mkdir -p reports/allure-results
+
       # 4️⃣ Run tests and generate Allure raw results
       - name: Run tests
         run: pytest --alluredir=reports
+
+      - name: List Allure results
+        if: always()
+        run: ls -R reports || echo "No allure results found"
 
       # 5️⃣ Generate GPT-based test summary
       - name: Generate AI Test Summary
