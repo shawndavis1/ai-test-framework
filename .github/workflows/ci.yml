@@ -37,10 +37,6 @@ jobs:
       - name: Run tests
         run: pytest --alluredir=reports
 
-      - name: List Allure results
-        if: always()
-        run: ls -R reports || echo "No allure results found"
-
       # 5️⃣ Generate GPT-based test summary
       - name: Generate AI Test Summary
         run: |
@@ -99,6 +95,7 @@ jobs:
 
       # 9️⃣ Generate Allure Report
       - name: Generate Allure report
+        if: always()
         run: allure generate reports --clean -o allure-report
 
       # 🔟 Deploy Allure Report to GitHub Pages
