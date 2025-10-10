@@ -1,4 +1,4 @@
 "DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
-"","79","test_get_users","tests.api","Fri Oct 10 13:12:15 UTC 2025","passed","Fri Oct 10 13:12:15 UTC 2025","","test_users_api","",""
-"","447","test_login_success[chromium]","tests.ui","Fri Oct 10 13:12:16 UTC 2025","passed","Fri Oct 10 13:12:17 UTC 2025","","test_login_ui","",""
 "","","GPT Test Summary","","","unknown","","","","",""
+"","137","test_get_users","tests.api","Fri Oct 10 13:25:18 UTC 2025","passed","Fri Oct 10 13:25:18 UTC 2025","","test_users_api","",""
+"","559","test_login_success[chromium]","tests.ui","Fri Oct 10 13:25:19 UTC 2025","passed","Fri Oct 10 13:25:20 UTC 2025","","test_login_ui","",""
