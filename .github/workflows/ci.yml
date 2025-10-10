@@ -37,7 +37,10 @@ jobs:
       # 5️⃣ Generate GPT-based test summary
       - name: Generate AI Test Summary
         run: |
-          python .github/workflows/gpt_summary.py > ai_summary.txt  
+          pip install openai
+          python .github/workflows/gpt_summary.py > ai_summary.txt
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}  
 
       # 5️⃣ Upload Allure raw results (for debugging or local rendering)
       - name: Upload Allure results
@@ -45,15 +48,6 @@ jobs:
         with:
           name: allure-results
           path: reports
-
-      # 6️⃣ Generate AI summary of Allure results
-      - name: Generate AI summary of test results
-        if: always() # run even if tests fail
-        run: |
-          pip install openai
-          python .github/workflows/gpt_summary_allure.py reports
-        env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       # 7️⃣ Post AI test summary comment
       - name: Post AI test summary comment
